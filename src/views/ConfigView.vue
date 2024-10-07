@@ -1,5 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import ConfigForm from "@/components/ConfigView/ConfigForm.vue";
+</script>
 
 <template>
-    <h1>FUNGUS</h1>
+    <ConfigForm />
 </template>
