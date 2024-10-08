@@ -20,7 +20,7 @@ const game = ref<Game>({
 	maps: []
 });
 
-const updateGameForm = (updatedGame: { homeTeam: string, awayTeam: string, rounds: number }) => {
+const updateGameForm = (updatedGame: { homeTeam: string, awayTeam: string }) => {
 	game.value = { ...game.value, ...updatedGame };
 	console.log(game.value);
 };

@@ -10,15 +10,14 @@ import { ref, watch } from 'vue';
 
 const homeTeam = ref("");
 const awayTeam = ref("");
-const rounds = ref(0);
 
 const emit = defineEmits(["update:game"]);
 
 watch(homeTeam, (newValue) => {
-	emit("update:game", { homeTeam: newValue, awayTeam, rounds });
+	emit("update:game", { homeTeam: newValue, awayTeam });
 });
 
 watch(awayTeam, (newValue) => {
-	emit("update:game", { homeTeam, awayTeam: newValue, rounds });
+	emit("update:game", { homeTeam, awayTeam: newValue });
 });
 </script>
