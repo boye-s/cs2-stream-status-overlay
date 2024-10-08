@@ -3,9 +3,10 @@
 		<GameForm @update:game="updateGameForm" />
 		<h2>Maps</h2>
 		<button @click="addMap">Add map</button>
-		<ul>
+		<ul v-if="game.maps.length">
 			<MapForm v-for="gameMap in game.maps" :key="gameMap.id" :gameMap="gameMap" @update:map="updateMapForm" />
 		</ul>
+		<button @click="gameStore.setGame(game)">Save</button>
 </template>
 
 <script setup lang="ts">
@@ -13,11 +14,15 @@ import { ref } from "vue";
 import GameForm from "@/components/ConfigView/GameForm.vue";
 import MapForm from "@/components/ConfigView/MapForm.vue";
 import { type Game, type GameMap } from "@/types";
+import { useGameStore } from "@/stores/game";
+
+const gameStore = useGameStore();
 
 const game = ref<Game>({
 	homeTeam: "",
 	awayTeam: "",
-	maps: []
+	maps: [],
+	game: ""
 });
 
 const updateGameForm = (updatedGame: { homeTeam: string, awayTeam: string }) => {
@@ -27,7 +32,7 @@ const updateGameForm = (updatedGame: { homeTeam: string, awayTeam: string }) => 
 
 const addMap = () => {
 	game.value?.maps.push({
-		index: getMaxValue(game.value?.maps, "index") + 1 || 0,
+		index: game.value.maps.length ? getHighestIndex(game.value.maps) + 1 : 0,
 		name: "",
 		pickedBy: "",
 		homeScore: 0,
@@ -35,12 +40,9 @@ const addMap = () => {
 	} as GameMap);
 };
 
-function getMaxValue<T>(arr: T[], key: keyof T): number | null {
-    if (!arr || arr.length === 0) return null;
-
-    return arr.reduce((max, obj) => {
-        const value = obj[key];
-        return (typeof value === 'number' && value > max) ? value : max;
+function getHighestIndex(maps:GameMap[]) {
+    return maps.reduce((max, gameMap) => {
+        return (typeof gameMap.index === 'number' && gameMap.index > max) ? gameMap.index : max;
     }, Number.NEGATIVE_INFINITY);
 }
 </script>
