@@ -1,0 +1,91 @@
+<template>
+	<div class="widget-wrapper">
+		<div class="home-team right">
+			<p>{{ game.homeTeam }}</p><div><img class="team-logo left" v-if="game.showTeamLogos" :src="homeTeamImage" /></div>
+		</div>
+		<div v-if="hasScore">
+			<p class="score">{{ homeTeamScore }} - {{ awayTeamScore }}</p>
+		</div>
+		<div v-else>
+			<p class="score">VS</p>
+		</div>
+		<div class="away-team left">
+			<div><img class="team-logo right" v-if="game.showTeamLogos" :src="awayTeamImage" /></div><p>{{ game.awayTeam }}</p>
+		</div>
+	</div>
+</template>
+
+<script setup lang="ts">
+import type { GameMap } from '@/types';
+import { computed } from 'vue';
+
+const props = defineProps(["game"]);
+
+const game = computed(() => props.game);
+
+const hasScore = computed(() => game.value.maps.some((gameMap:GameMap) => gameMap.homeScore || gameMap.awayScore));
+
+const homeTeamScore = computed(() => game.value.maps.reduce((acc:number, gameMap:GameMap) => acc + (gameMap.homeScore > gameMap.awayScore ? 1 : 0), 0));
+const awayTeamScore = computed(() => game.value.maps.reduce((acc:number, gameMap:GameMap) => acc + (gameMap.awayScore > gameMap.homeScore ? 1 : 0), 0));
+
+const homeTeamImage = computed(() => {
+	return new URL(`../../assets/images/${game.value.homeTeam}.png`, import.meta.url).href;
+});
+
+const awayTeamImage = computed(() => {
+	return new URL(`../../assets/images/${game.value.awayTeam}.png`, import.meta.url).href;
+});
+</script>
+
+<style scoped lang="scss">
+p {
+	position: relative;
+	top: .2rem;
+}
+.home-team, .away-team {
+	font-size: 2rem;
+	padding: 8px;
+	min-width: 250px;
+}
+
+.home-team {
+	display: flex;
+	justify-content: flex-end;
+	align-content: center;
+}
+
+.away-team {
+	display: flex;
+	justify-content: flex-start;
+	align-content: center;
+}
+
+.team-logo {
+	height: 35px;
+	vertical-align: middle;
+
+	&.left {
+		margin-left: 8px;
+	}
+
+	&.right {
+		margin-right: 8px;
+	}
+}
+
+.score {
+	font-size: 2.2rem;
+	padding: 16px;
+	font-weight: 700;
+}
+
+.widget-wrapper {
+	background-image: linear-gradient(to right, rgba(36, 63, 77, 0), rgba(36, 63, 77, 1), rgba(36, 63, 77, 0));
+	border-radius: 15px;
+	max-height: 150px;
+	min-width: 900px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+</style>

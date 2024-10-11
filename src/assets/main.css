@@ -32,3 +32,15 @@ label {
     font-weight: bold;
     font-size: 1.1rem;
 }
+
+button {
+    padding: 8px 16px;
+    color: #243F4D;
+    background-color: #9DAC86;
+    outline: none;
+    border: none;
+    margin: 2px;
+    font-family: "League Spartan", sans-serif;
+    font-weight: 600;
+    font-size: 1.3rem;
+}
