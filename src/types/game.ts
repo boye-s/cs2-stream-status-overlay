@@ -5,4 +5,5 @@ export type Game = {
 	awayTeam: string;
 	maps: GameMap[];
 	game: string;
+	showTeamLogos: boolean;
 }
