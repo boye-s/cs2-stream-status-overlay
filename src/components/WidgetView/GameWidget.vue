@@ -1,22 +1,28 @@
 <template>
 	<div class="widget-wrapper">
-		<div class="home-team right">
-			<p>{{ game.homeTeam }}</p><div><img class="team-logo left" v-if="game.showTeamLogos" :src="homeTeamImage" /></div>
+		<div class="widget-team-wrapper">
+			<div class="home-team right">
+				<p>{{ game.homeTeam }}</p><div><img class="team-logo left" v-if="game.showTeamLogos" :src="homeTeamImage" /></div>
+			</div>
+			<div v-if="hasScore">
+				<p class="score">{{ homeTeamScore }} - {{ awayTeamScore }}</p>
+			</div>
+			<div v-else>
+				<p class="score">VS</p>
+			</div>
+			<div class="away-team left">
+				<div><img class="team-logo right" v-if="game.showTeamLogos" :src="awayTeamImage" /></div><p>{{ game.awayTeam }}</p>
+			</div>
 		</div>
-		<div v-if="hasScore">
-			<p class="score">{{ homeTeamScore }} - {{ awayTeamScore }}</p>
-		</div>
-		<div v-else>
-			<p class="score">VS</p>
-		</div>
-		<div class="away-team left">
-			<div><img class="team-logo right" v-if="game.showTeamLogos" :src="awayTeamImage" /></div><p>{{ game.awayTeam }}</p>
+		<div class="widget-map-wrapper" v-if="game.maps.length > 0">
+			<game-map-widget v-for="gameMap in game.maps" :gameMap="gameMap" :key="gameMap.name" />
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
 import type { GameMap } from '@/types';
+import GameMapWidget from '@/components/WidgetView/GameMap.vue';
 import { computed } from 'vue';
 
 const props = defineProps(["game"]);
@@ -80,12 +86,28 @@ p {
 }
 
 .widget-wrapper {
-	background-image: linear-gradient(to right, rgba(36, 63, 77, 0), rgba(36, 63, 77, 1), rgba(36, 63, 77, 0));
-	border-radius: 15px;
-	max-height: 150px;
-	min-width: 900px;
 	display: flex;
-	justify-content: center;
+	flex-direction: column;
 	align-items: center;
+	gap: 36px;
+
+	.widget-team-wrapper {
+		background-image: linear-gradient(to right, rgba(36, 63, 77, 0), rgba(36, 63, 77, 1), rgba(36, 63, 77, 0));
+		border-radius: 15px;
+		max-height: 150px;
+		min-width: 900px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	
+	.widget-map-wrapper {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		border: 2px solid rgb(248, 241, 227);
+		border-radius: 15px;
+		background-color: rgba(36, 63, 77, 0.7);
+	}
 }
 </style>
