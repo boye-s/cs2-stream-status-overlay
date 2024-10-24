@@ -1,7 +1,7 @@
 @import "./base.css";
 
 #app {
-    max-width: 1280px;
+    max-width: 1580px;
     margin: 0 auto;
     padding: 2rem;
     font-weight: normal;
@@ -35,8 +35,8 @@ label {
 
 button {
     padding: 8px 16px;
-    color: #243F4D;
-    background-color: #9DAC86;
+    color: #243f4d;
+    background-color: #9dac86;
     outline: none;
     border: none;
     margin: 2px;
