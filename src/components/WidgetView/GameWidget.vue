@@ -104,7 +104,7 @@ p {
 }
 
 .score {
-    font-size: 2.2rem;
+    font-size: 4rem;
     padding: 16px;
     font-weight: 700;
 }
