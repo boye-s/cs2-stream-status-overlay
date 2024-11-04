@@ -18,7 +18,7 @@ app.get("/state/get", async (req, res) => {
     }
 })
 
-app.post("/state/post", async (req, res) => {
+app.post("/state/set", async (req, res) => {
     try {
         await writeFileSync(`overlay-state.json`, JSON.stringify(req.body, null, 2))
 
