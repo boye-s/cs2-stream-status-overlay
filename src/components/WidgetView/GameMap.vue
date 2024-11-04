@@ -6,7 +6,7 @@
             </div>
             <div class="map-name-wrapper">
                 <p class="map-name">
-                    {{ gameMap.name }}
+                    {{ gameMap.name.toUpperCase() }}
                 </p>
                 <div class="picked-by-wrapper" v-if="gameMap.pickedBy">
                     <div>
@@ -68,6 +68,7 @@ const gameMapPickedBy = computed(() => {
         bottom: -10px;
         margin: 0;
         padding: 0;
+        font-weight: 900;
     }
 
     .picked-by-wrapper {

@@ -20,7 +20,7 @@
                 <p>{{ game.awayTeam }}</p>
             </div>
         </div>
-        <div class="widget-map-wrapper" v-if="game.maps.length > 0">
+        <div class="widget-map-wrapper" v-if="game.maps?.length > 0">
             <game-map-widget
                 v-for="gameMap in game.maps"
                 :gameMap="gameMap"
@@ -41,17 +41,17 @@ const props = defineProps(["game"])
 const game = computed(() => props.game)
 
 const hasScore = computed(() =>
-    game.value.maps.some((gameMap: GameMap) => gameMap.homeScore || gameMap.awayScore)
+    game.value.maps?.some((gameMap: GameMap) => gameMap.homeScore || gameMap.awayScore)
 )
 
 const homeTeamScore = computed(() =>
-    game.value.maps.reduce(
+    game.value.maps?.reduce(
         (acc: number, gameMap: GameMap) => acc + (gameMap.homeScore > gameMap.awayScore ? 1 : 0),
         0
     )
 )
 const awayTeamScore = computed(() =>
-    game.value.maps.reduce(
+    game.value.maps?.reduce(
         (acc: number, gameMap: GameMap) => acc + (gameMap.awayScore > gameMap.homeScore ? 1 : 0),
         0
     )
