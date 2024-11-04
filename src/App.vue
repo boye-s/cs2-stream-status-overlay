@@ -3,10 +3,19 @@ import { RouterView } from "vue-router"
 </script>
 
 <template>
-    <RouterView />
+    <div class="app">
+        <RouterView />
+    </div>
 </template>
 
 <style scoped>
+.app {
+    background-color: rgba(36, 63, 77, 1);
+    max-width: 1580px;
+    margin: 0 auto;
+    font-weight: normal;
+}
+
 header {
     line-height: 1.5;
     max-height: 100vh;
