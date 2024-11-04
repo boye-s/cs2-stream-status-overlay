@@ -10,7 +10,7 @@
     </div>
     <h2>Maps</h2>
     <button @click="addMap">Add map</button>
-    <ul v-if="game.maps.length">
+    <ul v-if="game.maps?.length">
         <MapForm
             v-for="gameMap in game.maps"
             :key="gameMap.index"
@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref, onBeforeMount } from "vue"
 import GameForm from "@/components/ConfigView/GameForm.vue"
 import MapForm from "@/components/ConfigView/MapForm.vue"
 import { type Game, type GameMap } from "@/types"
@@ -34,7 +34,7 @@ const gameStore = useGameStore()
 const game = ref<Game>({
     homeTeam: "",
     awayTeam: "",
-    maps: [],
+    maps: [] as GameMap[],
     game: "",
     showTeamLogos: false
 })
@@ -49,13 +49,18 @@ const updateGameForm = (updatedGame: {
 }
 
 const updateMapForm = (updatedMap: GameMap) => {
-    const index = game.value.maps.findIndex((gameMap) => gameMap.index === updatedMap.index)
+    const index = game.value.maps?.findIndex((gameMap) => gameMap.index === updatedMap.index)
+    if (index === -1) return
     game.value.maps[index] = updatedMap
 }
 
 const addMap = () => {
-    game.value?.maps.push({
-        index: game.value.maps.length ? getHighestIndex(game.value.maps) + 1 : 0,
+    if (game.value.maps === undefined) {
+        game.value.maps = []
+    }
+
+    game.value.maps?.push({
+        index: game.value.maps?.length ? getHighestIndex(game.value.maps) + 1 : 0,
         name: "",
         pickedBy: "",
         homeScore: 0,
@@ -68,6 +73,11 @@ function getHighestIndex(maps: GameMap[]) {
         return typeof gameMap.index === "number" && gameMap.index > max ? gameMap.index : max
     }, Number.NEGATIVE_INFINITY)
 }
+
+onBeforeMount(async () => {
+    await gameStore.getGame()
+    game.value = gameStore.game
+})
 </script>
 
 <style scoped lang="scss">
