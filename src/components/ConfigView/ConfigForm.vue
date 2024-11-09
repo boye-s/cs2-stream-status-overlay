@@ -139,7 +139,7 @@ onBeforeMount(async () => {
 <style scoped lang="scss">
 .config-form {
     margin: 0 auto;
-    max-width: 1580px;
+    max-width: 1920px;
 }
 .form-widget-wrapper {
     display: flex;
