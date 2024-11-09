@@ -1,62 +1,115 @@
 <template>
-    <h1>Game Form</h1>
-    <div class="form-widget-wrapper">
-        <div>
-            <GameForm @update:game="updateGameForm" />
+    <div class="config-form">
+        <h1>Game Form</h1>
+        <div class="form-widget-wrapper">
+            <div>
+                <GameForm @update:game="updateGameForm" />
+            </div>
+            <div class="game-widget-wrapper">
+                <GameWidget :game="game" />
+            </div>
         </div>
-        <div class="game-widget-wrapper">
-            <GameWidget :game="game" />
-        </div>
+        <h2>Maps</h2>
+        <button @click="addMap">Add map</button>
+        <ul v-if="game.maps?.length">
+            <MapForm
+                v-for="gameMap in game.maps"
+                :key="gameMap.index"
+                :gameMap="gameMap"
+                @update:map="updateMapForm"
+            />
+        </ul>
+        <button @click="gameStore.setGame(game)">Save</button>
     </div>
-    <h2>Maps</h2>
-    <button @click="addMap">Add map</button>
-    <ul v-if="game.maps?.length">
-        <MapForm
-            v-for="gameMap in game.maps"
-            :key="gameMap.index"
-            :gameMap="gameMap"
-            @update:map="updateMapForm"
-        />
-    </ul>
-    <button @click="gameStore.setGame(game)">Save</button>
 </template>
 
 <script setup lang="ts">
-import { ref, onBeforeMount } from "vue"
-import GameForm from "@/components/ConfigView/GameForm.vue"
-import MapForm from "@/components/ConfigView/MapForm.vue"
-import { type Game, type GameMap } from "@/types"
-import { useGameStore } from "@/stores/game"
-import GameWidget from "../WidgetView/GameWidget.vue"
+import { ref, onBeforeMount } from "vue";
+import GameForm from "@/components/ConfigView/GameForm.vue";
+import MapForm from "@/components/ConfigView/MapForm.vue";
+import { type Game, type GameMap } from "@/types";
+import { useGameStore } from "@/stores/game";
+import GameWidget from "../WidgetView/GameWidget.vue";
 
-const gameStore = useGameStore()
+const gameStore = useGameStore();
 
 const game = ref<Game>({
     homeTeam: "",
     awayTeam: "",
     maps: [] as GameMap[],
     game: "",
-    showTeamLogos: false
-})
+    showTeamLogos: false,
+    scoreNeededToWin: 0,
+    homeTeamScore: 0,
+    awayTeamScore: 0,
+});
 
 const updateGameForm = (updatedGame: {
-    homeTeam: string
-    awayTeam: string
-    showTeamLogos: boolean
+    homeTeam: string;
+    awayTeam: string;
+    showTeamLogos: boolean;
 }) => {
-    game.value = { ...game.value, ...updatedGame }
-    console.log(game.value)
-}
+    game.value = { ...game.value, ...updatedGame };
+    console.log(game.value);
+};
 
 const updateMapForm = (updatedMap: GameMap) => {
-    const index = game.value.maps?.findIndex((gameMap) => gameMap.index === updatedMap.index)
-    if (index === -1) return
-    game.value.maps[index] = updatedMap
-}
+    const index = game.value.maps?.findIndex((gameMap) => gameMap.index === updatedMap.index);
+    if (index === -1) return;
+    game.value.maps[index] = updatedMap;
+
+    checkGameScore(game.value.maps);
+};
+
+const checkGameScore = (maps: GameMap[]) => {
+    game.value.scoreNeededToWin = Math.floor(maps?.length / 2) + 1;
+    let previousMapHasScore: boolean = false;
+    let homeTeamScore: number = 0;
+    let awayTeamScore: number = 0;
+    for (const gameMap of maps) {
+        if (
+            previousMapHasScore &&
+            (!gameMap.homeScore || gameMap.homeScore < 1) &&
+            (!gameMap.awayScore || gameMap.awayScore < 1) &&
+            homeTeamScore < game.value.scoreNeededToWin &&
+            awayTeamScore < game.value.scoreNeededToWin
+        ) {
+            console.log(gameMap.index, "up next");
+            gameMap.upNext = true;
+            previousMapHasScore = false;
+            gameMap.notNeeded = false;
+        } else if (gameMap.homeScore > 0 || gameMap.awayScore > 0) {
+            console.log(gameMap.index, "has score");
+            if (gameMap.homeScore > gameMap.awayScore) {
+                homeTeamScore++;
+            } else if (gameMap.homeScore < gameMap.awayScore) {
+                awayTeamScore++;
+            }
+
+            previousMapHasScore = true;
+            gameMap.upNext = false;
+            gameMap.notNeeded = false;
+        } else if (
+            homeTeamScore >= game.value.scoreNeededToWin ||
+            awayTeamScore >= game.value.scoreNeededToWin
+        ) {
+            console.log(gameMap.index, "game over");
+            gameMap.upNext = false;
+            gameMap.notNeeded = true;
+        } else {
+            console.log(gameMap.index, "no score");
+            previousMapHasScore = false;
+            gameMap.upNext = false;
+            gameMap.notNeeded = false;
+        }
+    }
+
+    game.value = { ...game.value, maps, homeTeamScore, awayTeamScore };
+};
 
 const addMap = () => {
     if (game.value.maps === undefined) {
-        game.value.maps = []
+        game.value.maps = [];
     }
 
     game.value.maps?.push({
@@ -64,23 +117,30 @@ const addMap = () => {
         name: "",
         pickedBy: "",
         homeScore: 0,
-        awayScore: 0
-    } as GameMap)
-}
+        awayScore: 0,
+    } as GameMap);
+};
 
 function getHighestIndex(maps: GameMap[]) {
     return maps.reduce((max, gameMap) => {
-        return typeof gameMap.index === "number" && gameMap.index > max ? gameMap.index : max
-    }, Number.NEGATIVE_INFINITY)
+        return typeof gameMap.index === "number" && gameMap.index > max ? gameMap.index : max;
+    }, Number.NEGATIVE_INFINITY);
 }
 
 onBeforeMount(async () => {
-    await gameStore.getGame()
-    game.value = gameStore.game
-})
+    await gameStore.getGame();
+
+    if (gameStore.game) {
+        game.value = gameStore.game;
+    }
+});
 </script>
 
 <style scoped lang="scss">
+.config-form {
+    margin: 0 auto;
+    max-width: 1580px;
+}
 .form-widget-wrapper {
     display: flex;
     flex-wrap: wrap;

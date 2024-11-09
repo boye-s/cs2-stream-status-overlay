@@ -17,31 +17,44 @@
                         <p v-else>{{ gameMap.pickedBy }}</p>
                     </div>
                 </div>
+                <div class="picked-by-wrapper" v-if="gameMap.decider">
+                    <div>
+                        <p class="picked-by">DECIDER</p>
+                    </div>
+                    <div>
+                        <img class="picked-by-logo" :src="deciderIcon" />
+                    </div>
+                </div>
             </div>
         </div>
         <div class="score" v-if="hasScore">{{ gameMap.homeScore }} - {{ gameMap.awayScore }}</div>
-        <div class="no-score" v-else>-</div>
+        <div class="score" v-else-if="gameMap.upNext">NEXT</div>
+        <div class="score" v-else-if="gameMap.notNeeded">X</div>
     </div>
 </template>
 
 <script setup lang="ts">
-import type { GameMap } from "@/types"
-import { computed } from "vue"
+import type { GameMap } from "@/types";
+import { computed } from "vue";
 
-const props = defineProps<{ gameMap: GameMap; showLogos: boolean }>()
+const props = defineProps<{ gameMap: GameMap; showLogos: boolean; upNext: boolean }>();
 
-const gameMap = computed(() => props.gameMap)
-const hasScore = computed(() => gameMap.value.homeScore || gameMap.value.awayScore)
+const gameMap = computed(() => props.gameMap);
+const hasScore = computed(() => gameMap.value.homeScore || gameMap.value.awayScore);
 const gameMapLogo = computed(() => {
     return new URL(
         `../../assets/images/maps/${gameMap.value.name.toLowerCase()}.png`,
-        import.meta.url
-    ).href
-})
+        import.meta.url,
+    ).href;
+});
 
 const gameMapPickedBy = computed(() => {
-    return new URL(`../../assets/images/teams/${gameMap.value.pickedBy}.png`, import.meta.url).href
-})
+    return new URL(`../../assets/images/teams/${gameMap.value.pickedBy}.png`, import.meta.url).href;
+});
+
+const deciderIcon = computed(() => {
+    return new URL(`../../assets/images/knife-icon.png`, import.meta.url).href;
+});
 </script>
 
 <style scoped lang="scss">

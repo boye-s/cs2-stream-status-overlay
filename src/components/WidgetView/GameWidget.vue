@@ -25,6 +25,7 @@
                 v-for="gameMap in game.maps"
                 :gameMap="gameMap"
                 :showLogos="true"
+                :upNext="!gameMap.homeScore && !gameMap.awayScore"
                 :key="gameMap.name"
             />
         </div>
@@ -76,6 +77,10 @@ p {
     font-size: 3rem;
     padding: 8px;
     min-width: 600px;
+
+    p {
+        text-shadow: 0 0 10px rgba(36, 63, 77, 1);
+    }
 }
 
 .home-team {
