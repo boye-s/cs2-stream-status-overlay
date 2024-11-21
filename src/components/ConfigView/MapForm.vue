@@ -13,6 +13,9 @@
             <label for="awayScore">Away Team Score</label>
             <input type="number" id="awayScore" name="awayScore" required v-model="awayScore" />
         </div>
+        <button class="delete-map" @click="emit('delete:map', props.gameMap.index)">
+            Delete Map
+        </button>
     </li>
 </template>
 
@@ -90,16 +93,34 @@ onMounted(() => {
     pickedBy.value = props.gameMap.pickedBy;
     homeScore.value = props.gameMap.homeScore;
     awayScore.value = props.gameMap.awayScore;
+    decider.value = props.gameMap.decider;
 });
 </script>
 
 <style scoped lang="scss">
 .map-form-card {
+    position: relative;
     border: 2px solid rgba(235, 235, 235, 0.64);
     border-radius: 5px;
     padding: 10px;
     display: flex;
     flex-wrap: wrap;
     gap: 32px;
+
+    .delete-map {
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        background-color: rgba(235, 235, 235, 0.64);
+        border: 0;
+        border-radius: 0 5px 0 5px;
+        padding: 5px 10px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+
+        &:hover {
+            background-color: rgba(235, 235, 235, 0.8);
+        }
+    }
 }
 </style>

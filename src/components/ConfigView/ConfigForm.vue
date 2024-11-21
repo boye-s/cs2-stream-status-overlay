@@ -17,6 +17,7 @@
                 :key="gameMap.index"
                 :gameMap="gameMap"
                 @update:map="updateMapForm"
+                @delete:map="deleteMap"
             />
         </ul>
         <button @click="gameStore.setGame(game)">Save</button>
@@ -57,6 +58,14 @@ const updateMapForm = (updatedMap: GameMap) => {
     const index = game.value.maps?.findIndex((gameMap) => gameMap.index === updatedMap.index);
     if (index === -1) return;
     game.value.maps[index] = updatedMap;
+
+    checkGameScore(game.value.maps);
+};
+
+const deleteMap = (index: number) => {
+    const mapIndex = game.value.maps?.findIndex((gameMap) => gameMap.index === index);
+    if (mapIndex === -1) return;
+    game.value.maps?.splice(mapIndex, 1);
 
     checkGameScore(game.value.maps);
 };
