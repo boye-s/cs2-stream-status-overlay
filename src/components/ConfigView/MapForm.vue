@@ -31,7 +31,7 @@ const homeScore = ref(0);
 const awayScore = ref(0);
 const decider = ref(false);
 
-const emit = defineEmits(["update:map"]);
+const emit = defineEmits(["update:map", "delete:map"]);
 
 watch(name, (newValue) => {
     emit("update:map", {
