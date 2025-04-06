@@ -13,9 +13,7 @@
             <label for="awayScore">Away Team Score</label>
             <input type="number" id="awayScore" name="awayScore" required v-model="awayScore" />
         </div>
-        <button class="delete-map" @click="emit('delete:map', props.gameMap.index)">
-            Delete Map
-        </button>
+        <button class="delete-map" @click="emit('delete:map', gameMap.index)">Delete Map</button>
     </li>
 </template>
 
@@ -23,7 +21,7 @@
 import { ref, watch, onMounted } from "vue";
 import InputToggle from "../utils/InputToggle.vue";
 
-const props = defineProps(["gameMap"]);
+const { gameMap } = defineProps(["gameMap"]);
 
 const name = ref("");
 const pickedBy = ref("");
@@ -35,7 +33,7 @@ const emit = defineEmits(["update:map", "delete:map"]);
 
 watch(name, (newValue) => {
     emit("update:map", {
-        index: props.gameMap.index,
+        index: gameMap.index,
         name: newValue,
         pickedBy,
         homeScore,
@@ -46,7 +44,7 @@ watch(name, (newValue) => {
 
 watch(pickedBy, (newValue) => {
     emit("update:map", {
-        index: props.gameMap.index,
+        index: gameMap.index,
         name,
         pickedBy: newValue,
         homeScore,
@@ -57,7 +55,7 @@ watch(pickedBy, (newValue) => {
 
 watch(homeScore, (newValue) => {
     emit("update:map", {
-        index: props.gameMap.index,
+        index: gameMap.index,
         name,
         pickedBy,
         homeScore: newValue,
@@ -68,7 +66,7 @@ watch(homeScore, (newValue) => {
 
 watch(awayScore, (newValue) => {
     emit("update:map", {
-        index: props.gameMap.index,
+        index: gameMap.index,
         name,
         pickedBy,
         homeScore,
@@ -79,7 +77,7 @@ watch(awayScore, (newValue) => {
 
 watch(decider, (newValue) => {
     emit("update:map", {
-        index: props.gameMap.index,
+        index: gameMap.index,
         name,
         pickedBy,
         homeScore,
@@ -89,11 +87,11 @@ watch(decider, (newValue) => {
 });
 
 onMounted(() => {
-    name.value = props.gameMap.name;
-    pickedBy.value = props.gameMap.pickedBy;
-    homeScore.value = props.gameMap.homeScore;
-    awayScore.value = props.gameMap.awayScore;
-    decider.value = props.gameMap.decider;
+    name.value = gameMap.name;
+    pickedBy.value = gameMap.pickedBy;
+    homeScore.value = gameMap.homeScore;
+    awayScore.value = gameMap.awayScore;
+    decider.value = gameMap.decider;
 });
 </script>
 

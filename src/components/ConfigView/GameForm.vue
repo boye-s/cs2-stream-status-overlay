@@ -13,24 +13,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
 import InputToggle from "../utils/InputToggle.vue";
 
-const homeTeam = ref("");
-const awayTeam = ref("");
-const showTeamLogos = ref(false);
-
-const emit = defineEmits(["update:game"]);
-
-watch(homeTeam, (newValue) => {
-    emit("update:game", { homeTeam: newValue, awayTeam, showTeamLogos });
+const homeTeam = defineModel("homeTeam", {
+    type: String,
 });
-
-watch(awayTeam, (newValue) => {
-    emit("update:game", { homeTeam, awayTeam: newValue, showTeamLogos });
+const awayTeam = defineModel("awayTeam", {
+    type: String,
 });
-
-watch(showTeamLogos, (newValue) => {
-    emit("update:game", { homeTeam, awayTeam, showTeamLogos: newValue });
+const showTeamLogos = defineModel("showTeamLogos", {
+    type: Boolean,
 });
 </script>

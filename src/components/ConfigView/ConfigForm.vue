@@ -3,7 +3,11 @@
         <h1>Game Form</h1>
         <div class="form-widget-wrapper">
             <div>
-                <GameForm @update:game="updateGameForm" />
+                <GameForm
+                    v-model:homeTeam="game.homeTeam"
+                    v-model:awayTeam="game.awayTeam"
+                    v-model:showTeamLogos="game.showTeamLogos"
+                />
             </div>
             <div class="game-widget-wrapper">
                 <GameWidget :game="game" />
@@ -46,15 +50,6 @@ const game = ref<Game>({
     homeTeamScore: 0,
     awayTeamScore: 0,
 });
-
-const updateGameForm = (updatedGame: {
-    homeTeam: string;
-    awayTeam: string;
-    showTeamLogos: boolean;
-}) => {
-    game.value = { ...game.value, ...updatedGame };
-    console.log(game.value);
-};
 
 const updateMapForm = (updatedMap: GameMap) => {
     const index = game.value.maps?.findIndex((gameMap) => gameMap.index === updatedMap.index);
