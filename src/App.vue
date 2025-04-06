@@ -10,13 +10,8 @@ import { RouterView } from "vue-router";
 
 <style scoped>
 .app {
-    background-color: rgba(36, 63, 77, 1);
     font-weight: normal;
-}
-
-header {
-    line-height: 1.5;
-    max-height: 100vh;
+    height: 100%;
 }
 
 .logo {

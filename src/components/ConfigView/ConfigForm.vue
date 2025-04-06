@@ -149,6 +149,8 @@ onBeforeMount(async () => {
 .config-form {
     margin: 0 auto;
     max-width: 1920px;
+    height: 100%;
+    background-color: rgba(36, 63, 77, 1);
 }
 .form-widget-wrapper {
     display: flex;

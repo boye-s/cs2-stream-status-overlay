@@ -1,5 +1,11 @@
 @import "./base.css";
 
+html,
+body,
+#app {
+    height: 100%;
+}
+
 a,
 .green {
     text-decoration: none;
