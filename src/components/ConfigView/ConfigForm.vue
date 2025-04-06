@@ -20,7 +20,9 @@
                 @delete:map="deleteMap"
             />
         </ul>
+
         <button @click="gameStore.setGame(game)">Save</button>
+        <a class="button" href="/widget" target="_blank">Open Widget</a>
     </div>
 </template>
 
