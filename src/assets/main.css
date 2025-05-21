@@ -1,5 +1,13 @@
 @import "./base.css";
 
+body {
+    background-color: rgba(36, 63, 77, 1);
+}
+
+body:has(.transparent-bg) {
+    background-color: transparent;
+}
+
 html,
 body,
 #app {

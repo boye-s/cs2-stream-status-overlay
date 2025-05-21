@@ -3,17 +3,12 @@ import { RouterView } from "vue-router";
 </script>
 
 <template>
-    <div class="app">
+    <div class="app" :class="{ 'transparent-bg': $route.name === 'widget' }">
         <RouterView />
     </div>
 </template>
 
 <style scoped>
-.app {
-    font-weight: normal;
-    height: 100%;
-}
-
 .logo {
     display: block;
     margin: 0 auto 2rem;
