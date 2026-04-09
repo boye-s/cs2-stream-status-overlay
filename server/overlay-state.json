@@ -1,1 +1,39 @@
-{}
+{
+  "homeTeam": "AlvK-47",
+  "awayTeam": "Elkjøp Brukerfeil",
+  "maps": [
+    {
+      "index": 0,
+      "name": "Dust 2",
+      "pickedBy": "AlvK-47",
+      "homeScore": 10,
+      "awayScore": 13,
+      "upNext": false,
+      "notNeeded": false
+    },
+    {
+      "index": 1,
+      "name": "Mirage",
+      "pickedBy": "Elkjøp Brukerfeil",
+      "homeScore": 5,
+      "awayScore": 13,
+      "upNext": false,
+      "notNeeded": false
+    },
+    {
+      "index": 2,
+      "name": "Anubis",
+      "pickedBy": "",
+      "homeScore": 0,
+      "awayScore": 0,
+      "decider": true,
+      "upNext": false,
+      "notNeeded": true
+    }
+  ],
+  "game": "",
+  "showTeamLogos": true,
+  "scoreNeededToWin": 2,
+  "homeTeamScore": 0,
+  "awayTeamScore": 2
+}

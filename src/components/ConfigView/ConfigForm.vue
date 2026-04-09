@@ -1,6 +1,11 @@
 <template>
     <div class="config-form">
         <h1>Game Form</h1>
+        <div>
+            <label>Get game by match ID</label>
+            <input v-model="matchId" placeholder="Enter match ID" />
+            <button @click="getMatchData(matchId)">Get game</button>
+        </div>
         <div class="form-widget-wrapper">
             <div>
                 <GameForm
@@ -37,6 +42,7 @@ import MapForm from "@/components/ConfigView/MapForm.vue";
 import { type Game, type GameMap } from "@/types";
 import { useGameStore } from "@/stores/game";
 import GameWidget from "../WidgetView/GameWidget.vue";
+import { getMatchupById } from "@/services/blService";
 
 const gameStore = useGameStore();
 
@@ -50,6 +56,9 @@ const game = ref<Game>({
     homeTeamScore: 0,
     awayTeamScore: 0,
 });
+
+const blMatch = ref(null);
+const matchId = ref("");
 
 const updateMapForm = (updatedMap: GameMap) => {
     const index = game.value.maps?.findIndex((gameMap) => gameMap.index === updatedMap.index);
@@ -132,6 +141,11 @@ function getHighestIndex(maps: GameMap[]) {
         return typeof gameMap.index === "number" && gameMap.index > max ? gameMap.index : max;
     }, Number.NEGATIVE_INFINITY);
 }
+
+const getMatchData = async (matchId: string) => {
+    const res = await getMatchupById(matchId);
+    blMatch.value = res;
+};
 
 onBeforeMount(async () => {
     await gameStore.getGame();

@@ -4,8 +4,7 @@ export type GameMap = {
     homeScore: number;
     awayScore: number;
     pickedBy: string;
-    game: string;
-    decider: boolean;
+    decider?: boolean;
     upNext: boolean;
     notNeeded: boolean;
 };
